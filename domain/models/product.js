@@ -9,11 +9,16 @@ var sizeSchema = new Schema({
 var productSchema = new Schema({
   productName: String,
   price: Number,
+  gender: String,
+  brand: String,
+  productCategory: String,
   category: String,
   colorWay: String,
   imageurl: String,
+  description: String,
   sizeQuantity: [sizeSchema],
   tags: [String],
+  releaseDate: Date,
   dateUpdated: {type: Date, default: Date.now}
 });
 
