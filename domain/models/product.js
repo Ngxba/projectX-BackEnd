@@ -9,6 +9,9 @@ var sizeSchema = new Schema({
 var productSchema = new Schema({
   productName: String,
   price: Number,
+  category: String,
+  colorWay: String,
+  imageurl: String,
   sizeQuantity: [sizeSchema],
   tags: [String],
   dateUpdated: {type: Date, default: Date.now}
