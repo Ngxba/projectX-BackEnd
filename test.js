@@ -61,10 +61,10 @@ axios(config)
 
 
 
-// var productService = require("./domain/services/productService");
+var productService = require("./domain/services/productService");
 
-// const createProduct = async (productOps) =>{
-//     const newProduct = await productService.createProduct(productOps);
-//     console.log(newProduct)
-// } 
-// product.map(async (item) => await createProduct(item))
+const createProduct = async (productOps) =>{
+    const newProduct = await productService.createProduct(productOps);
+    console.log("newProduct added")
+} 
+product.map(async (item) => await createProduct(item))
