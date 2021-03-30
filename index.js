@@ -1,5 +1,6 @@
 require("dotenv").config()
 var express = require("express");
+var cors = require("cors");
 var router = require("./application/router/index.js") // mac dinh no se tro? toi index.js
 var morgan = require("morgan")
 var bodyParser = require("body-parser");
@@ -24,6 +25,7 @@ require("./config/passport")
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended : true})) 
 app.use(morgan("dev"))
+app.use(cors());
 // app.use(expressSession)
 
 

@@ -10,6 +10,8 @@ const UserSchema = new Schema({
     lastName: String
   },
   address: String,
+  sex: String,
+  phoneNumber: String,
   dateUpdated: {type: Date, default: Date.now},
   role: String,
   hash: String,

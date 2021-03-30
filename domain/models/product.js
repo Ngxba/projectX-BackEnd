@@ -3,11 +3,16 @@ var Schema = mongoose.Schema;
 
 var sizeSchema = new Schema({
   size: String,
-  quantity: Number
+  quantity: Number,
 })
 
 var productSchema = new Schema({
+  available: Boolean,
   productName: String,
+  brand: String,
+  colorWay: String,
+  description: String,
+  releaseDate: Date,
   price: Number,
   sizeQuantity: [sizeSchema],
   tags: [String],

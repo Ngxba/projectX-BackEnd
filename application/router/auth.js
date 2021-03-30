@@ -6,9 +6,9 @@ var auth = require("../../config/auth")
 var router = express.Router();
 
 router.post("/register", auth.optional, async (req, res) => {
-  const { name, address, email, password } = req.body;
+  const { name, email, password } = req.body;
   try {
-    const newUser = await authService.signUp(name, address, email, password);
+    const newUser = await authService.signUp(name, email, password);
     res.json({
         token: newUser.generateJWT()
     });
@@ -29,15 +29,19 @@ router.post("/login", auth.optional, async (req, res, next) => {
     }
     passport.authenticate("local", {session: false}, (err, user, next) => {
         if(err){
-            return next(err)
+            return next(err);
         } 
         if(user) {
             return res.json({
                 email: user.email,
                 name: user.name,
-                address: user.address,
+                // address: user.address,
                 token: user.generateJWT()
             })
+        }else {
+          return res.status(203).json({
+            err: user
+          })
         }
     })(req, res, next)
 });
