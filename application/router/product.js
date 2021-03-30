@@ -5,7 +5,7 @@ var router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const result = await productService.getAllProduct();
-    res.status(200).json(result.length);
+    res.status(200).json(result);
   } catch (err) {
     res.status(500).json({
       err: err.message,
