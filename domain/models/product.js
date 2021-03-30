@@ -14,8 +14,16 @@ var productSchema = new Schema({
   description: String,
   releaseDate: Date,
   price: Number,
+  gender: String,
+  brand: String,
+  productCategory: String,
+  category: String,
+  colorWay: String,
+  imageurl: String,
+  description: String,
   sizeQuantity: [sizeSchema],
   tags: [String],
+  releaseDate: Date,
   dateUpdated: {type: Date, default: Date.now}
 });
 

@@ -25,6 +25,18 @@ router.get("/:productId", async (req, res) => {
   }
 });
 
+router.get("/browse", async (req, res) => {
+  const { productId } = req.params;
+  try {
+    const result = await productService.getProduct(productId);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({
+      err: err.message,
+    });
+  }
+});
+
 router.post("/createProduct", async (req, res) => {
   const productOps = {};
   for (const [key, value] of Object.entries(req.body)) {
