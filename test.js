@@ -1,6 +1,7 @@
 var axios = require('axios');
+var productService = require("./domain/services/productService");
 
-const apiUrl = 'https://stockx.com/api/browse?productCategory=sneakers'
+const apiUrl = 'https://stockx.com/api/browse?productCategory=sneakers&gender=preschool'
 
 var config = {
     method: 'get',
@@ -34,37 +35,49 @@ function getRanSize() {
     return sizeQuantity;
 }
 
-axios(config)
-    .then(function (response) {
-        //   console.log(response.data.Products[0]);
-        response.data.Products.map((item) => {
-            product = [...product, {
-                productName: `${item.shoe} ${item.name}`,
-                price: item.retailPrice,
-                gender: item.gender,
-                brand: item.brand,
-                productCategory: item.productCategory,
-                category: item.category,
-                colorWay: item.colorway,
-                imageurl: item.media.imageUrl,
-                description: item.description.replace(/(<([^>]+)>)/gi, ""),
-                sizeQuantity: getRanSize(),
-                tags: item._tags,
-                releaseDate: new Date(item.releaseTime)
-            }]
-        })
-        console.log(product[0]);
+// axios(config)
+//     .then(function (response) {
+//         //   console.log(response.data.Products[0]);
+
+//     })
+//     .catch(function (error) {
+//         console.log(error);
+//     });
+
+async function createProduct(productOps) {
+    try {
+        const newProduct = await productService.createProduct(productOps);
+        console.log(`newProduct added ${newProduct.productName}`)
+    } catch (error) {
+        console.log("cant add product")
+    }
+}
+
+async function makeRequest() {
+
+    let response = await axios(config)
+    // console.log(response.data.Products[0])
+    response.data.Products.map((item) => {
+        product = [...product, {
+            productName: `${item.shoe} ${item.name}`,
+            price: item.retailPrice,
+            gender: item.gender,
+            brand: item.brand,
+            productCategory: item.productCategory,
+            category: item.category,
+            colorWay: item.colorway,
+            imageurl: item.media.imageUrl,
+            description: item.description != null ? item.description.replace(/(<([^>]+)>)/gi, "") : "",
+            sizeQuantity: getRanSize(),
+            tags: item._tags,
+            releaseDate: new Date(item.releaseTime)
+        }]
     })
-    .catch(function (error) {
-        console.log(error);
+
+}
+
+makeRequest()
+    .then(() => {
+        // product.map(async (item) => await createProduct(item))
     });
 
-
-
-// var productService = require("./domain/services/productService");
-
-// const createProduct = async (productOps) =>{
-//     const newProduct = await productService.createProduct(productOps);
-//     console.log("newProduct added")
-// } 
-// product.map(async (item) => await createProduct(item))

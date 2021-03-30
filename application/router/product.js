@@ -5,7 +5,7 @@ var router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const result = await productService.getAllProduct();
-    res.status(200).json(result);
+    res.status(200).json(result.length);
   } catch (err) {
     res.status(500).json({
       err: err.message,
@@ -14,6 +14,18 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:productId", async (req, res) => {
+  const { productId } = req.params;
+  try {
+    const result = await productService.getProduct(productId);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({
+      err: err.message,
+    });
+  }
+});
+
+router.get("/browse", async (req, res) => {
   const { productId } = req.params;
   try {
     const result = await productService.getProduct(productId);
