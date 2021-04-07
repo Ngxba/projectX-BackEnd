@@ -13,6 +13,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/browse", async (req, res) => {
+  // tags=rolex,day-date,style|pilot
+  // tags=yeeze & productCategory=sneaker & size=5 & gender=men & year=2001,2005 & price=<100,150-200,>800 & sort=most-popular
+  const { productCategory, gender, size, price, tags, year, sort, limit, offset } = req.query;
+  
+  try {
+    const result = await productService.getFilteredProduct({ productCategory, gender, size, price, tags, year, sort }, offset, limit)
+    res.status(200).json(result);
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({
+      err: err.message,
+    });
+  }
+});
+
 router.get("/:productId", async (req, res) => {
   const { productId } = req.params;
   try {
@@ -25,17 +41,6 @@ router.get("/:productId", async (req, res) => {
   }
 });
 
-router.get("/browse", async (req, res) => {
-  const { productId } = req.params;
-  try {
-    const result = await productService.getProduct(productId);
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).json({
-      err: err.message,
-    });
-  }
-});
 
 router.post("/createProduct", async (req, res) => {
   const productOps = {};
