@@ -67,7 +67,10 @@ async function makeRequest() {
             category: item.category,
             colorWay: item.colorway,
             imageurl: item.media.imageUrl,
-            description: item.description != null ? item.description.replace(/(<([^>]+)>)/gi, "") : "",
+            tickerSymbol: item.tickerSymbol,
+            detail: item.traits,
+            // description: item.description != null ? item.description.replace(/(<([^>]+)>)/gi, "") : "",
+            description: item.description != null ? item.description : "",
             sizeQuantity: getRanSize(),
             tags: item._tags,
             releaseDate: new Date(item.releaseTime)
@@ -78,6 +81,6 @@ async function makeRequest() {
 
 makeRequest()
     .then(() => {
-        // product.map(async (item) => await createProduct(item))
+        product.map(async (item) => await createProduct(item))
     });
 

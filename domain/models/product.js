@@ -6,24 +6,25 @@ var sizeSchema = new Schema({
   quantity: Number,
 })
 
+var detail = new Schema({
+  name: String,
+  value: String,
+})
+
 var productSchema = new Schema({
-  available: Boolean,
+  available: {type: Boolean, default: true},
   productName: String,
-  brand: String,
-  colorWay: String,
   description: String,
-  releaseDate: Date,
   price: Number,
   gender: String,
   brand: String,
   productCategory: String,
   category: String,
-  colorWay: String,
   imageurl: String,
-  description: String,
+  tickerSymbol: String,
+  detail : [detail],
   sizeQuantity: [sizeSchema],
   tags: [String],
-  releaseDate: Date,
   dateUpdated: {type: Date, default: Date.now}
 });
 
