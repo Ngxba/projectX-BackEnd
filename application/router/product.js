@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
 
 router.get("/browse", async (req, res) => {
   // tags=rolex,day-date,style|pilot
-  // tags=yeeze & productCategory=sneaker & size=5 & gender=men & year=2001,2005 & price=<100,150-200,>800 & sort=most-popular
+  // tags=nike&productCategory=sneakers&size=5&gender=men&year=2020&price=<100,150-200,>800&offset=0&limit=10
   const { productCategory, gender, size, price, tags, year, sort, limit, offset } = req.query;
   
   try {

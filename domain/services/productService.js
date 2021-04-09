@@ -46,8 +46,8 @@ const productService = {
             yearQuery = [
               {
                 releaseDate: {
-                  $gte: new Date(new Date(i, 0, 2).setHours(00, 00, 00)),
-                  $lte: new Date(new Date(i, 11, 31).setHours(23, 59, 59))
+                  $gte: new Date(new Date(`${i}-1-1`)),
+                  $lte: new Date(new Date(`${i}-12-31`))
                 }
               }, ...yearQuery]
           });
@@ -56,8 +56,8 @@ const productService = {
         else andQueries = [{ [key]: value }, ...andQueries];
       }
     }
-    const searchQueries = { $and: [...andQueries] };
-    console.log(searchQueries);
+    const searchQueries = { $and: [...andQueries, { available: true }] };
+    // console.log(searchQueries);
     const totalRecord = await Product.countDocuments(searchQueries);
     const result = await Product.find(searchQueries).limit(parseInt(limit)).skip(parseInt(limit) * parseInt(offset));
     if (result) {
@@ -110,7 +110,7 @@ const productService = {
   },
 
   deleteProduct: async (_id) => {
-    let result = await Product.findOneAndRemove({ _id });
+    let result = await Product.updateOne({ _id }, { $set: { available: false } });
     if (result) {
       return result;
     } else {
