@@ -1,24 +1,11 @@
 require("dotenv").config()
 var express = require("express");
 var cors = require("cors");
-var router = require("./application/router/index.js") // mac dinh no se tro? toi index.js
+var router = require("./application/router")
 var morgan = require("morgan")
 var bodyParser = require("body-parser");
 
-// const expressSession = require('express-session')({
-//     secret: process.env.JWT_KEY,
-//     resave: false,
-//     saveUninitialized: false
-//   });
-
 const app = express();
-
-/*  PASSPORT SETUP  */
-
-// const passport = require('passport');
-
-// app.use(passport.initialize());
-// app.use(passport.session());
 
 require("./config/passport")
 

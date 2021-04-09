@@ -10,12 +10,14 @@ router.post("/register", auth.optional, async (req, res) => {
   try {
     const newUser = await authService.signUp(name, email, password);
     res.json({
-        token: newUser.generateJWT()
+        token: newUser.generateJWT(),
+        email: newUser.email,
+        name: newUser.name,
+        address: newUser.address,
     });
   } catch (err) {
-    res.status(400);
-    res.json({
-      err: err.message,
+    res.status(400).json({
+      error: err.message,
     });
   }
 });
@@ -40,7 +42,7 @@ router.post("/login", auth.optional, async (req, res, next) => {
             })
         }else {
           return res.status(203).json({
-            err: user
+            error: "LOGIN_FALSE/WRONG_INFO"
           })
         }
     })(req, res, next)
