@@ -1,10 +1,13 @@
 var Product = require("../models/product");
 
 const productService = {
-  getProduct: async (productID) => {
-    let result = await Product.findById(productID);
+  getProduct: async (urlKey) => {
+    if (!(typeof urlKey === 'string' || urlKey instanceof String)) {
+      throw new Error("error/INVALID_URLKEY")
+    }
+    let result = await Product.findOne({ urlKey });
     if (result) {
-      return result;
+      return { product: result };
     } else {
       throw new Error("error/PRODUCT_NOT_FOUND/WRONG_ID");
     }
@@ -25,9 +28,10 @@ const productService = {
     tags,
     year,
     sort
-  }, offset = 0, limit = 5) => {
+  }, offset = 0, limit = 10) => {
     let andQueries = [];
-    for (const [key, value] of Object.entries({ productCategory, gender, size, price, tags, year })) {
+    let sortQuery = {};
+    for (const [key, value] of Object.entries({ productCategory, gender, size, price, tags, year, sort })) {
       if (value != null) {
         if (key === 'size') andQueries = [{ sizeQuantity: { $elemMatch: { size: { $eq: value }, quantity: { $ne: 0 } } } }, ...andQueries];
         else if (key === 'price') {
@@ -53,13 +57,17 @@ const productService = {
           });
           andQueries = [{ $or: [...yearQuery] }, ...andQueries];
         }
+        else if (key === 'sort') {
+          if (value === 'most-popular') sortQuery = { releaseDate: -1 };
+          else if (value === 'trending') sortQuery = { dateUpdated: -1 };
+        }
         else andQueries = [{ [key]: value }, ...andQueries];
       }
     }
     const searchQueries = { $and: [...andQueries, { available: true }] };
-    // console.log(searchQueries);
+    console.log(sortQuery);
     const totalRecord = await Product.countDocuments(searchQueries);
-    const result = await Product.find(searchQueries).limit(parseInt(limit)).skip(parseInt(limit) * parseInt(offset));
+    const result = await Product.find(searchQueries).limit(parseInt(limit)).skip(parseInt(limit) * parseInt(offset)).sort(sortQuery);
     if (result) {
       return { totalRecord, result };
     } else {

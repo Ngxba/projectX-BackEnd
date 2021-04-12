@@ -29,10 +29,10 @@ router.get("/browse", async (req, res) => {
   }
 });
 
-router.get("/:productId", async (req, res) => {
-  const { productId } = req.params;
+router.get("/:urlKey", async (req, res) => {
+  const { urlKey } = req.params;
   try {
-    const result = await productService.getProduct(productId);
+    const result = await productService.getProduct(urlKey);
     res.status(200).json(result);
   } catch (err) {
     res.status(500).json({

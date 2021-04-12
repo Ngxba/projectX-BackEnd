@@ -2,7 +2,7 @@ var axios = require('axios');
 const { getAllProduct } = require('./domain/services/productService');
 var productService = require("./domain/services/productService");
 
-const apiUrl = 'https://stockx.com/api/browse?productCategory=sneakers&gender=preschool'
+const apiUrl = 'https://stockx.com/api/browse?productCategory=sneakers&market.lowestAsk=gte-600'
 
 var config = {
     method: 'get',
@@ -74,16 +74,17 @@ async function makeRequest() {
             description: item.description != null ? item.description : "",
             sizeQuantity: getRanSize(),
             tags: item._tags,
-            releaseDate: new Date(item.releaseTime)
+            urlKey: item.urlKey,
+            releaseDate: new Date(item.releaseDate)
         }]
     })
 
 }
 
-// makeRequest()
-//     .then(() => {
-//         product.map(async (item) => await createProduct(item))
-//     });
+makeRequest()
+    .then(() => {
+        product.map(async (item) => await createProduct(item))
+    });
 
 
 // async function updatePro() {
