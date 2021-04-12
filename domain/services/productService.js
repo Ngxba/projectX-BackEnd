@@ -65,7 +65,6 @@ const productService = {
       }
     }
     const searchQueries = { $and: [...andQueries, { available: true }] };
-    console.log(sortQuery);
     const totalRecord = await Product.countDocuments(searchQueries);
     const result = await Product.find(searchQueries).limit(parseInt(limit)).skip(parseInt(limit) * parseInt(offset)).sort(sortQuery);
     if (result) {
