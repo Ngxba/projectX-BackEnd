@@ -43,7 +43,7 @@ const productService = {
           })
           andQueries = [{ $or: [...priceQuery] }, ...andQueries];
         }
-        else if (key === 'tags') andQueries = [{ tags: { $all: value.split(",") } }, ...andQueries];
+        else if (key === 'tags') andQueries = [{ tags: { $all: value.split(",").filter(item => item != null) } }, ...andQueries];
         else if (key === 'year') {
           let yearQuery = [];
           value.split(",").map(i => {
