@@ -1,7 +1,8 @@
 var axios = require('axios');
+const { getAllProduct } = require('./domain/services/productService');
 var productService = require("./domain/services/productService");
 
-const apiUrl = 'https://stockx.com/api/browse?productCategory=sneakers&gender=preschool'
+const apiUrl = 'https://stockx.com/api/browse?productCategory=sneakers&market.lowestAsk=gte-600'
 
 var config = {
     method: 'get',
@@ -73,7 +74,8 @@ async function makeRequest() {
             description: item.description != null ? item.description : "",
             sizeQuantity: getRanSize(),
             tags: item._tags,
-            releaseDate: new Date(item.releaseTime)
+            urlKey: item.urlKey,
+            releaseDate: new Date(item.releaseDate)
         }]
     })
 
@@ -84,3 +86,20 @@ makeRequest()
         product.map(async (item) => await createProduct(item))
     });
 
+
+// async function updatePro() {
+//     let res = await getAllProduct();
+//     res.map(async i => {
+//         Object.assign(i, { releaseDate: i.detail.reduce((val, item) => item.name === "Release Date" ? new Date(item.value) : val, new Date("2020-04-08")) })
+//         // console.log(i.releaseDate)
+//         try {
+//             const updateProduct = await productService.updateProduct(i._id, i);
+//             console.log(`newProduct added ${updateProduct.ok}`)
+//         } catch (error) {
+//             console.log("cant add product")
+//         }
+//     })
+//     // console.log(res[0])
+
+// }
+// updatePro()

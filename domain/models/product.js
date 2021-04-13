@@ -25,6 +25,8 @@ var productSchema = new Schema({
   detail : [detail],
   sizeQuantity: [sizeSchema],
   tags: [String],
+  releaseDate: Date,
+  urlKey: String,
   dateUpdated: {type: Date, default: Date.now}
 });
 
