@@ -46,6 +46,7 @@ router.post("/login", auth.optional, async (req, res, next) =>
             return res.json({
                 email: user.email,
                 name: user.name,
+                id: user._id,
                 // address: user.address,
                 token: user.generateJWT()
             });
