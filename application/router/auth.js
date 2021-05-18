@@ -61,15 +61,16 @@ router.post("/login", auth.optional, async (req, res, next) =>
 
 router.get("/me", auth.require, async (req, res) =>
 {
-    // Bên front-end cần phải gửi token trong header thì mới load được nhé
-    // axios.get(link to back-end, {headers: {Authorization: Token lấy từ local storage hay đâu đó}})
-    // rồi set axios.defaults.common["Authorization"] = "Bearer + Token" => việc này sẽ khiến tất cả axios khác đều có header như thế, nên set sau khi login xong
     const {payload} = req;
     try
     {
         const result = await userService.getUser(payload._id);
-        res.status(200).json(result);
-        // chú ý, đang gửi cả DB về, custom để gửi thông tin cần thiết thôi nhé
+        res.status(200).json({
+            id: payload._id,
+            name: result.name,
+            email: result.email,
+            token: result.generateJWT()
+        });
     }
     catch (err)
     {
