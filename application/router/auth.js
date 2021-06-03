@@ -35,6 +35,7 @@ router.post("/login", auth.optional, async (req, res, next) => {
         } 
         if(user) {
             return res.json({
+                id: user._id,
                 email: user.email,
                 name: user.name,
                 // address: user.address,
