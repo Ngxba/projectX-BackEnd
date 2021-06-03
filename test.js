@@ -1,6 +1,7 @@
 var axios = require('axios');
 const { getAllProduct } = require('./domain/services/productService');
 var productService = require("./domain/services/productService");
+const userService = require("./domain/services/userService")
 
 const apiUrl = 'https://stockx.com/api/browse?productCategory=sneakers&market.lowestAsk=gte-600'
 
@@ -81,25 +82,47 @@ async function makeRequest() {
 
 }
 
-makeRequest()
-    .then(() => {
-        product.map(async (item) => await createProduct(item))
-    });
+// makeRequest()
+//     .then(() => {
+//         product.map(async (item) => await createProduct(item))
+//     });
 
 
-// async function updatePro() {
-//     let res = await getAllProduct();
-//     res.map(async i => {
-//         Object.assign(i, { releaseDate: i.detail.reduce((val, item) => item.name === "Release Date" ? new Date(item.value) : val, new Date("2020-04-08")) })
-//         // console.log(i.releaseDate)
-//         try {
-//             const updateProduct = await productService.updateProduct(i._id, i);
-//             console.log(`newProduct added ${updateProduct.ok}`)
-//         } catch (error) {
-//             console.log("cant add product")
-//         }
-//     })
-//     // console.log(res[0])
+async function updatePro() {
+    let res = await getAllProduct();
+    res.map(async i => {
+        // Object.assign(i, { releaseDate: i.detail.reduce((val, item) => item.name === "Release Date" ? new Date(item.value) : val, new Date("2020-04-08")) })
+        // console.log(i.releaseDate)
+        Object.assign(i, { numberSold: getRandomInt(5, 60) })
+        try {
+            const updateProduct = await productService.updateProduct(i._id, i);
+            console.log(`newProduct added ${updateProduct.ok}`)
+        } catch (error) {
+            console.log("cant add product")
+        }
+    })
+    // console.log(res[0])
 
-// }
+}
 // updatePro()
+
+async function updateUser() {
+    const res = await userService.getAllUser();
+    res.map(async i => {
+        Object.assign(i, {
+            sex: "male",
+            role: "user",
+            phoneNumber: `09${getRandomInt(12345678, 99999999)}`,
+            address: "",
+        })
+        // console.log(i);
+        try {
+            const updateProduct = await userService.updateUser(i._id, i);
+            console.log(`user updated ${updateProduct.ok}`)
+        } catch (error) {
+            console.log("cant update user")
+        }
+    })
+}
+
+updateUser()

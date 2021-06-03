@@ -16,10 +16,10 @@ router.get("/", async (req, res) => {
 router.get("/browse", async (req, res) => {
   // tags=rolex,day-date,style|pilot
   // tags=nike&productCategory=sneakers&size=5&gender=men&year=2020&price=<100,150-200,>800&offset=0&limit=10&sort=most-popular
-  const { productCategory, gender, size, price, tags, year, sort, limit, offset } = req.query;
+  const { productCategory, gender, size, price, tags, year, sort, limit, offset, admin } = req.query;
   
   try {
-    const result = await productService.getFilteredProduct({ productCategory, gender, size, price, tags, year, sort }, offset, limit)
+    const result = await productService.getFilteredProduct({ productCategory, gender, size, price, tags, year, sort }, offset, limit, admin);
     res.status(200).json(result);
   } catch (err) {
     console.error(err)

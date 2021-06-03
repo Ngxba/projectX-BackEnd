@@ -28,7 +28,7 @@ const productService = {
     tags,
     year,
     sort
-  }, offset = 0, limit = 10) => {
+  }, offset = 0, limit = 20, admin) => {
     let andQueries = [];
     let sortQuery = {};
     for (const [key, value] of Object.entries({ productCategory, gender, size, price, tags, year, sort })) {
@@ -64,7 +64,7 @@ const productService = {
         else andQueries = [{ [key]: value }, ...andQueries];
       }
     }
-    const searchQueries = { $and: [...andQueries, { available: true }] };
+    const searchQueries = { $and: [...andQueries, { available: admin ? { $in: [true, false] } : true }] };
     const totalRecord = await Product.countDocuments(searchQueries);
     const result = await Product.find(searchQueries).limit(parseInt(limit)).skip(parseInt(limit) * parseInt(offset)).sort(sortQuery);
     if (result) {
