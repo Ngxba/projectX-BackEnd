@@ -30,13 +30,14 @@ UserSchema.methods.validPassword = function(password) {
 
 
 UserSchema.methods.generateJWT = function() {
-  const now = new Date();
-  const expirationDate = new Date();
-  expirationDate.setDate(now.getDate() + 15);
+  const now = new Date().getTime();
+  const expirationDate = now + 15*24*60*60*1000
+  // const dateExp = (expirationDate.getTime() / 1000, 10);
+  // const returnDate = new Date(1000*dateExp);
+  // console.log(returnDate.getDate())
   return jwt.sign({
     _id: this._id,
-    email: this.email,
-    exp: parseInt(expirationDate.getTime() / 1000, 10)
+    exp: expirationDate
   }, process.env.JWT_SECRET);
 }
 const User = mongoose.model("User", UserSchema);

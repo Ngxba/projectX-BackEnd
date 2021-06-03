@@ -54,8 +54,21 @@ router.get("/me", auth.require, async (req, res) => {
     // rồi set axios.defaults.common["Authorization"] = "Bearer + Token" => việc này sẽ khiến tất cả axios khác đều có header như thế, nên set sau khi login xong
     const { payload } = req;
     try {
+      if (payload.expirationDate < new Date().getTime()) {
+        res.status(500).json({
+          err: "Token expired"
+        });
+      }
       const result = await userService.getUser(payload._id);
-      res.status(200).json(result); 
+
+      // const {email,address,name}
+      res.status(200).json({
+        id: payload._id,
+        email: result.email,
+        name: result.name,
+        address: result.address,
+        token: result.generateJWT(),
+      }); 
       // chú ý, đang gửi cả DB về, custom để gửi thông tin cần thiết thôi nhé
     } catch (err) {
       res.status(500).json({
