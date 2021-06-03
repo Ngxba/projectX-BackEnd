@@ -12,7 +12,7 @@ var detail = new Schema({
 })
 
 var productSchema = new Schema({
-  available: {type: Boolean, default: true},
+  available: { type: Boolean, default: true },
   productName: String,
   description: String,
   price: Number,
@@ -22,12 +22,13 @@ var productSchema = new Schema({
   category: String,
   imageurl: String,
   tickerSymbol: String,
-  detail : [detail],
+  numberSold: Number,
+  detail: [detail],
   sizeQuantity: [sizeSchema],
   tags: [String],
   releaseDate: Date,
   urlKey: String,
-  dateUpdated: {type: Date, default: Date.now}
+  dateUpdated: { type: Date, default: Date.now }
 });
 
 const Product = mongoose.model("product", productSchema);

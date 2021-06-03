@@ -20,11 +20,15 @@ const productService = {
       throw new Error("error/CANNOT_GET_ALL/UNIDENTIFY_ERROR");
     }
   },
-  getFilteredProduct: async (
-    { productCategory, gender, size, price, tags, year, sort },
-    offset = 0,
-    limit = 10
-  ) => {
+  getFilteredProduct: async ({
+    productCategory,
+    gender,
+    size,
+    price,
+    tags,
+    year,
+    sort
+  }, offset = 0, limit = 20, admin) => {
     let andQueries = [];
     let sortQuery = {};
     for (const [key, value] of Object.entries({
@@ -93,7 +97,7 @@ const productService = {
         } else andQueries = [{ [key]: value }, ...andQueries];
       }
     }
-    const searchQueries = { $and: [...andQueries, { available: true }] };
+    const searchQueries = { $and: [...andQueries, { available: admin ? { $in: [true, false] } : true }] };
     const totalRecord = await Product.countDocuments(searchQueries);
     const result = await Product.find(searchQueries)
       .limit(parseInt(limit))
