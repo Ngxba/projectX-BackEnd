@@ -15,7 +15,8 @@ const UserSchema = new Schema({
   dateUpdated: {type: Date, default: Date.now},
   role: String,
   hash: String,
-  salt: String
+  salt: String,
+  likedProduct: [String]
 })
 
 UserSchema.methods.setPassword = function(password) {

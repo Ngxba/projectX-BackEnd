@@ -10,6 +10,17 @@ const userService = {
       throw new Error("error/USER_NOT_FOUND/WRONG_EMAIL_PASS");
     }
   },
+  updateLikedProduct: async (_id, likedProduct) => {
+    // let updateOps = []
+    // updateOps["dateUpdated"] = Date.now();
+    // updateOps["likedProduct"] = likedProduct;
+    let result = await User.updateOne({ _id }, { $set: {"likedProduct": likedProduct} });
+    if (result) {
+      return result;
+    } else {
+      throw new Error("error/USER_NOT_FOUND/WRONG_EMAIL_PASS");
+    }
+  },
   getUser: async (_id) => {
     console.log(_id)
     let result = await User.findById(_id);

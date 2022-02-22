@@ -14,6 +14,7 @@ router.post("/register", auth.optional, async (req, res) => {
         email: newUser.email,
         name: newUser.name,
         address: newUser.address,
+        likedProduct: []
     });
   } catch (err) {
     res.status(400).json({
@@ -38,6 +39,7 @@ router.post("/login", auth.optional, async (req, res, next) => {
                 id: user._id,
                 email: user.email,
                 name: user.name,
+                likedProduct: user.likedProduct,
                 // address: user.address,
                 token: user.generateJWT()
             })
@@ -68,6 +70,7 @@ router.get("/me", auth.require, async (req, res) => {
         email: result.email,
         name: result.name,
         address: result.address,
+        likedProduct: result.likedProduct,
         token: result.generateJWT(),
       }); 
       // chú ý, đang gửi cả DB về, custom để gửi thông tin cần thiết thôi nhé

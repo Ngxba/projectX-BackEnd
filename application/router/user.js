@@ -3,7 +3,7 @@ var userService = require("../../domain/services/userService");
 var auth = require("../../config/auth")
 var router = express.Router();
 
-router.get("/", auth.require, async (req, res) => {
+router.get("/", async (req, res) => {
   const { offset, limit } = req.query
   try {
     const result = await userService.getAllUser(offset, limit);
@@ -40,6 +40,21 @@ router.post("/update/:userId", auth.require, async (req, res) => {
   try {
     const updatedUser = await userService.updateUser(userId, updateOps);
     res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(400);
+    res.json({
+      err: err.message,
+    });
+  }
+});
+
+router.post("/update/likedProduct/:userId", async (req, res) => {
+  const { userId } = req.params;
+  let { likedProduct } = req.body;
+  try {
+    const updatedUser = await userService.updateLikedProduct(userId, likedProduct);
+    const newData = await userService.getUser(userId);
+    res.status(200).json(newData);
   } catch (err) {
     res.status(400);
     res.json({
