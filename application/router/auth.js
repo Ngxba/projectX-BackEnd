@@ -71,7 +71,7 @@ router.get("/me", auth.require, async (req, res) => {
         token: result.generateJWT(),
       }); 
       // chú ý, đang gửi cả DB về, custom để gửi thông tin cần thiết thôi nhé
-    } catch (err) {
+    } catch (err) { 
       res.status(500).json({
         err: err.message,
       });
